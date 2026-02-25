@@ -95,7 +95,8 @@ export function Testimonials() {
                   <img
                     src={testimonial.image}
                     alt={testimonial.author}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center"
+                    loading="lazy"
                   />
                 </div>
               ))}
@@ -127,7 +128,7 @@ export function Testimonials() {
               </div>
 
               {/* Quote */}
-              <div className="relative min-h-[180px]">
+              <div className="relative min-h-[260px] lg:min-h-[290px]">
                 {testimonials.map((testimonial, index) => (
                   <p
                     key={index}
