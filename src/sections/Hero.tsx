@@ -41,7 +41,7 @@ export function Hero() {
       {/* Background Image with Blur */}
       <div
         className={cn(
-          'absolute inset-0 transition-opacity duration-[1800ms]',
+          'absolute inset-0 transition-opacity [transition-duration:1800ms]',
           isLoaded && imageLoaded ? 'opacity-100' : 'opacity-0'
         )}
       >
@@ -110,7 +110,7 @@ export function Hero() {
       {heroConfig.roles[0] && (
         <div
           className={cn(
-            'absolute left-8 lg:left-16 top-1/2 -translate-y-1/2 z-30 transition-all duration-[1200ms] ease-out-quart',
+            'absolute left-8 lg:left-16 top-1/2 -translate-y-1/2 z-30 transition-all [transition-duration:1200ms] ease-out-quart',
             isLoaded ? 'opacity-100' : 'opacity-0'
           )}
           style={{ transitionDelay: '800ms' }}
@@ -123,7 +123,7 @@ export function Hero() {
       {heroConfig.roles[1] && (
         <div
           className={cn(
-            'absolute right-8 lg:right-16 top-1/2 -translate-y-1/2 z-30 transition-all duration-[1200ms] ease-out-quart',
+            'absolute right-8 lg:right-16 top-1/2 -translate-y-1/2 z-30 transition-all [transition-duration:1200ms] ease-out-quart',
             isLoaded ? 'opacity-100' : 'opacity-0'
           )}
           style={{ transitionDelay: '900ms' }}
@@ -139,7 +139,7 @@ export function Hero() {
         {/* Main Heading - large and impactful */}
         <div
           className={cn(
-            'text-center transition-all duration-[1200ms] ease-out-quart pb-8 md:pb-12',
+            'text-center transition-all [transition-duration:1200ms] ease-out-quart pb-8 md:pb-12',
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
           style={{ transitionDelay: '600ms' }}
