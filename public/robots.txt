@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mescobari.iq.com.bo/sitemap.xml

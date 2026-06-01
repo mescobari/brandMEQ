@@ -39,18 +39,18 @@ export function Testimonials() {
   if (testimonials.length === 0) return null;
 
   return (
-    <section id="testimonials" className="w-full py-24 lg:py-32 bg-white">
-      <div ref={sectionRef} className="container-large px-6 lg:px-12">
+    <section id="testimonials" className="about-dark font-jakarta w-full overflow-hidden py-24 lg:py-32">
+      <div ref={sectionRef} className="mx-auto w-full max-w-[1280px] px-6 lg:px-12">
         {/* Header */}
-        <div className="max-w-2xl mb-16">
+        <div className="mb-14 max-w-2xl">
           {testimonialsConfig.label && (
             <div
               className={cn(
-                'transition-all duration-800 ease-out-quart',
+                'transition-all duration-700 ease-out',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
               )}
             >
-              <span className="text-xs font-geist-mono uppercase tracking-widest text-exvia-black/50">
+              <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#8A8FA3]">
                 {testimonialsConfig.label}
               </span>
             </div>
@@ -59,7 +59,7 @@ export function Testimonials() {
           {testimonialsConfig.heading && (
             <h2
               className={cn(
-                'text-h2 font-semibold text-exvia-black mt-4 transition-all duration-800 ease-out-quart',
+                'mt-4 text-[clamp(28px,3.2vw,44px)] font-extrabold leading-tight tracking-tight text-white transition-all duration-700 ease-out',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
               )}
               style={{ transitionDelay: '100ms' }}
@@ -72,55 +72,58 @@ export function Testimonials() {
         {/* Testimonials Slider */}
         <div
           className={cn(
-            'relative transition-all duration-800 ease-out-quart',
+            'relative transition-all duration-700 ease-out',
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
           style={{ transitionDelay: '200ms' }}
         >
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Image Side */}
-            <div className="relative aspect-[4/5] lg:aspect-[3/4] overflow-hidden bg-exvia-subtle rounded-lg">
-              {testimonials.map((testimonial, index) => (
+          <div className="grid items-start gap-12 lg:grid-cols-[auto,1fr] lg:gap-16">
+            {/* Image Side — floating portrait with brand glow (same effect as About) */}
+            <div className="flex justify-center lg:justify-start">
+              <div className="about-float about-image-glow relative w-[280px] sm:w-[320px]">
                 <div
-                  key={index}
-                  className={cn(
-                    'absolute inset-0 transition-all duration-1000 ease-out-cubic',
-                    index === activeIndex
-                      ? 'opacity-100 translate-y-0'
-                      : index < activeIndex
-                      ? 'opacity-0 -translate-y-full'
-                      : 'opacity-0 translate-y-full'
-                  )}
+                  className="relative z-10 aspect-[4/5] overflow-hidden rounded-2xl border border-white/[0.08]"
+                  style={{
+                    boxShadow:
+                      '0 30px 60px -15px rgba(0,0,0,0.7), 0 0 50px -10px rgba(59,130,246,0.35), 0 0 80px -20px rgba(139,92,246,0.30)',
+                  }}
                 >
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.author}
-                    className="w-full h-full object-cover object-center"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-
-              {/* Quote Icon Overlay */}
-              <div className="absolute top-6 left-6">
-                <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center">
-                  <Quote className="w-5 h-5 text-exvia-black" />
+                  {testimonials.map((testimonial, index) => (
+                    <div
+                      key={index}
+                      className={cn(
+                        'absolute inset-0 transition-all duration-1000 ease-out',
+                        index === activeIndex
+                          ? 'opacity-100 translate-y-0'
+                          : index < activeIndex
+                          ? 'opacity-0 -translate-y-full'
+                          : 'opacity-0 translate-y-full'
+                      )}
+                    >
+                      <img
+                        src={testimonial.image}
+                        alt={testimonial.author}
+                        className="h-full w-full object-cover object-center"
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
 
             {/* Content Side */}
-            <div className="space-y-8">
+            <div className="space-y-6">
               {/* Stars */}
               <div className="flex gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
                     className={cn(
-                      'w-5 h-5 transition-all duration-300',
+                      'h-5 w-5 transition-all duration-300',
                       i < testimonials[activeIndex].rating
-                        ? 'fill-exvia-black text-exvia-black'
-                        : 'text-exvia-border'
+                        ? 'fill-[#2DD4C4] text-[#2DD4C4]'
+                        : 'text-white/20'
                     )}
                     style={{ transitionDelay: `${i * 50}ms` }}
                   />
@@ -128,39 +131,38 @@ export function Testimonials() {
               </div>
 
               {/* Quote */}
-              <div className="relative min-h-[260px] lg:min-h-[290px]">
+              <div className="relative min-h-[220px] lg:min-h-[240px]">
+                <Quote className="absolute -left-1 -top-2 h-8 w-8 text-white/10" />
                 {testimonials.map((testimonial, index) => (
                   <p
                     key={index}
                     className={cn(
-                      'text-xl lg:text-2xl text-exvia-black leading-relaxed absolute inset-0 transition-all duration-700 ease-out-quart',
+                      'absolute inset-0 text-[19px] leading-relaxed text-[#E4E7EF] transition-all duration-700 ease-out lg:text-[22px]',
                       index === activeIndex
                         ? 'opacity-100 translate-y-0'
-                        : 'opacity-0 translate-y-4 pointer-events-none'
+                        : 'pointer-events-none opacity-0 translate-y-4'
                     )}
                   >
-                    "{testimonial.quote}"
+                    “{testimonial.quote}”
                   </p>
                 ))}
               </div>
 
               {/* Author Info */}
-              <div className="pt-6 border-t border-exvia-border">
-                <div className="relative min-h-[60px]">
+              <div className="border-t border-white/[0.08] pt-5">
+                <div className="relative min-h-[64px]">
                   {testimonials.map((testimonial, index) => (
                     <div
                       key={index}
                       className={cn(
-                        'absolute inset-0 transition-all duration-500 ease-out-quart',
+                        'absolute inset-0 transition-all duration-500 ease-out',
                         index === activeIndex
                           ? 'opacity-100 translate-y-0'
-                          : 'opacity-0 translate-y-4 pointer-events-none'
+                          : 'pointer-events-none opacity-0 translate-y-4'
                       )}
                     >
-                      <p className="text-lg font-semibold text-exvia-black">
-                        {testimonial.author}
-                      </p>
-                      <p className="text-sm text-exvia-black/50 mt-1">
+                      <p className="text-[22px] font-semibold text-white">{testimonial.author}</p>
+                      <p className="mt-1 text-[17px] text-[#8A8FA3]">
                         {testimonial.role}, {testimonial.company}
                       </p>
                     </div>
@@ -169,20 +171,23 @@ export function Testimonials() {
               </div>
 
               {/* Navigation */}
-              <div className="flex items-center justify-between pt-4">
+              <div className="flex items-center justify-between pt-2">
                 {/* Dots */}
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
                   {testimonials.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => goToSlide(index)}
                       className={cn(
-                        'w-2 h-2 rounded-full transition-all duration-300',
-                        index === activeIndex
-                          ? 'bg-exvia-black w-6'
-                          : 'bg-exvia-border hover:bg-exvia-black/30'
+                        'h-2 rounded-full transition-all duration-300',
+                        index === activeIndex ? 'w-6' : 'w-2 bg-white/25 hover:bg-white/45'
                       )}
-                      aria-label={`Go to slide ${index + 1}`}
+                      style={
+                        index === activeIndex
+                          ? { background: 'linear-gradient(90deg, #2DD4C4, #3B82F6, #8B5CF6)' }
+                          : undefined
+                      }
+                      aria-label={`Ir al testimonio ${index + 1}`}
                     />
                   ))}
                 </div>
@@ -191,17 +196,17 @@ export function Testimonials() {
                 <div className="flex gap-2">
                   <button
                     onClick={prevSlide}
-                    className="w-10 h-10 border border-exvia-border rounded-full flex items-center justify-center hover:border-exvia-black hover:bg-exvia-black hover:text-white transition-all duration-300"
-                    aria-label="Previous testimonial"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/80 transition-all duration-300 hover:bg-white/10 hover:text-white"
+                    aria-label="Testimonio anterior"
                   >
-                    <ChevronLeft className="w-4 h-4" />
+                    <ChevronLeft className="h-4 w-4" />
                   </button>
                   <button
                     onClick={nextSlide}
-                    className="w-10 h-10 border border-exvia-border rounded-full flex items-center justify-center hover:border-exvia-black hover:bg-exvia-black hover:text-white transition-all duration-300"
-                    aria-label="Next testimonial"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/80 transition-all duration-300 hover:bg-white/10 hover:text-white"
+                    aria-label="Siguiente testimonio"
                   >
-                    <ChevronRight className="w-4 h-4" />
+                    <ChevronRight className="h-4 w-4" />
                   </button>
                 </div>
               </div>

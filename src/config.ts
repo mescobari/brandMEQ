@@ -33,7 +33,7 @@ export const navigationConfig: NavigationConfig = {
     { label: "Sobre Mí", href: "#about" },
     { label: "Servicios", href: "#services" },
     { label: "Proyectos", href: "#portfolio" },
-    { label: "Blog", href: "#blog" },
+    { label: "Blog", href: "/blog" },
     { label: "Contacto", href: "#contact" },
   ],
   contactLabel: "Agendar Consulta",
@@ -56,7 +56,7 @@ export const heroConfig: HeroConfig = {
     "Líder de Transformación Digital",
     "Consultor Estratégico",
   ],
-  backgroundImage: "/images/hero-bg.jpg",
+  backgroundImage: "/images/maxHero.png",
 };
 
 // About section configuration
@@ -76,6 +76,7 @@ export interface AboutConfig {
   experienceValue: string;
   experienceLabel: string;
   stats: AboutStat[];
+  bioImage: AboutImage;
   images: AboutImage[];
 }
 
@@ -89,6 +90,10 @@ export const aboutConfig: AboutConfig = {
     { value: "99.9%", label: "Disponibilidad\nde Servicios" },
     { value: "40%", label: "Reducción de\nIncidentes" },
   ],
+  bioImage: {
+    src: "/images/maxBio.png",
+    alt: "Gabriel Max Antonio Escobari Quiroga — Project Manager Senior en TI",
+  },
   images: [
     { src: "/images/about-1.jpg", alt: "Max Escobari trabajando en soluciones tecnológicas" },
     { src: "/images/about-2.jpg", alt: "Liderando equipos de desarrollo" },
@@ -97,47 +102,88 @@ export const aboutConfig: AboutConfig = {
   ],
 };
 
-// Services section configuration
+// Institutions ribbon (marquee) configuration
+export interface Institution {
+  name: string;
+  logo: string;
+  initials: string;
+}
+
+export interface InstitutionsConfig {
+  label: string;
+  items: Institution[];
+}
+
+export const institutionsConfig: InstitutionsConfig = {
+  label: "INSTITUCIONES CON LAS QUE HE TRABAJADO",
+  items: [
+    { name: "Banco Central de Bolivia", logo: "/images/logos/bcb.png", initials: "BCB" },
+    { name: "YPFB", logo: "/images/logos/ypfb.png", initials: "YPFB" },
+    { name: "Asociación Cuna", logo: "/images/logos/cuna.png", initials: "AC" },
+    { name: "Ministerio de Planificación del Desarrollo (VIPFE)", logo: "/images/logos/vipfe.png", initials: "VIPFE" },
+    { name: "PASA — Seguridad Alimentaria", logo: "/images/logos/pasa.png", initials: "PASA" },
+    { name: "JICA — Hospital Japonés", logo: "/images/logos/jica.png", initials: "JICA" },
+    { name: "PNUD — Autoridad de la Madre Tierra", logo: "/images/logos/pnud.png", initials: "PNUD" },
+  ],
+};
+
+// Specialties section configuration (3D cylinder carousel)
 export interface ServiceItem {
   iconName: string;
   title: string;
+  subtitle: string;
   description: string;
-  image: string;
 }
 
 export interface ServicesConfig {
   label: string;
   heading: string;
+  ctaText: string;
+  ctaHref: string;
   services: ServiceItem[];
 }
 
 export const servicesConfig: ServicesConfig = {
-  label: "SERVICIOS",
-  heading: "Soluciones tecnológicas estratégicas para la transformación digital de su organización",
+  label: "ESPECIALIDADES",
+  heading: "Áreas de especialización",
+  ctaText: "Hablemos",
+  ctaHref: "#contact",
   services: [
     {
-      iconName: "Layout",
+      iconName: "Network",
       title: "Arquitectura de Soluciones",
+      subtitle: "Infraestructura",
       description: "Diseño e implementación de arquitecturas tecnológicas escalables que garantizan interoperabilidad, seguridad y sostenibilidad a largo plazo. Especializado en la modernización de sistemas heredados y migración a infraestructuras cloud.",
-      image: "/images/service-1.jpg",
     },
     {
-      iconName: "Code",
+      iconName: "Code2",
       title: "Desarrollo de Software",
+      subtitle: "Full-stack",
       description: "Liderazgo técnico en proyectos de desarrollo full-stack utilizando tecnologías modernas como React, Angular, Node.js, Laravel y Spring Boot. Gestión completa del ciclo de vida del software con enfoque en calidad y entregas ágiles.",
-      image: "/images/service-2.jpg",
     },
     {
-      iconName: "Kanban",
+      iconName: "KanbanSquare",
       title: "Gestión de Proyectos TI",
+      subtitle: "Ágil & PMBOK",
       description: "Dirección integral de proyectos tecnológicos aplicando metodologías ágiles (Scrum, Kanban) y enfoques híbridos PMBOK. Gestión de alcance, tiempo, costos, riesgos y stakeholders con reportes ejecutivos claros y medibles.",
-      image: "/images/service-3.jpg",
     },
     {
-      iconName: "CheckCircle",
+      iconName: "Settings2",
       title: "Implementación ITIL",
+      subtitle: "Gestión de Servicios",
       description: "Implementación de mejores prácticas en gestión de servicios de TI según el marco ITIL 4. Optimización de procesos de service desk, gestión de incidentes, problemas y cambios para maximizar la disponibilidad y satisfacción del usuario.",
-      image: "/images/service-4.jpg",
+    },
+    {
+      iconName: "Cpu",
+      title: "Gemelos Digitales",
+      subtitle: "Simulación",
+      description: "Un gemelo digital permite anticipar fallas y optimizar operaciones en tiempo real, reduciendo riesgos y costos de manera tangible.",
+    },
+    {
+      iconName: "Bot",
+      title: "IA Agéntica",
+      subtitle: "Automatización",
+      description: "Agentes autónomos que aceleran procesos críticos, ejecutan tareas con trazabilidad y liberan a los equipos para decisiones estratégicas.",
     },
   ],
 };
@@ -344,7 +390,7 @@ export const footerConfig: FooterConfig = {
     {
       title: "Recursos",
       links: [
-        { label: "Blog Técnico", href: "#blog" },
+        { label: "Blog Técnico", href: "/blog" },
         { label: "Publicaciones", href: "#publications" },
         { label: "Certificaciones", href: "#about" },
         { label: "Casos de Éxito", href: "#portfolio" },

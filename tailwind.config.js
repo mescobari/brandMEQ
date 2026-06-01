@@ -51,6 +51,7 @@ module.exports = {
       fontFamily: {
         geist: ['Geist', 'Arial', 'sans-serif'],
         'geist-mono': ['GeistMono', 'Courier New', 'monospace'],
+        jakarta: ['Plus Jakarta Sans', 'Geist', 'sans-serif'],
       },
       fontSize: {
         'h1': ['clamp(3rem, 21vw, 21vw)', { lineHeight: '1', letterSpacing: '-0.04em' }],

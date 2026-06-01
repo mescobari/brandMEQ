@@ -1,0 +1,79 @@
+# ─── Decap CMS — configuración ───────────────────────────────────────────────
+# Modo LOCAL (recomendado): ejecuta `npm run cms` y abre /admin/index.html.
+# Edita los .md en disco; luego: git commit + npm run build + subir dist/.
+#
+# El backend `github` queda preconfigurado para cuando quieras editar desde la
+# web (requiere un proxy OAuth — ver docs/BLOG.md).
+
+backend:
+  name: github
+  repo: mescobari/brandMEQ
+  branch: main
+
+# Permite editar localmente contra el sistema de archivos (sin login)
+local_backend: true
+
+# Idioma del panel
+locale: es
+
+# Subida de imágenes del blog
+media_folder: "public/images/blog"
+public_folder: "/images/blog"
+
+collections:
+  - name: blog
+    label: "Artículos del Blog"
+    label_singular: "Artículo"
+    description: "Crear y editar artículos. La categoría corresponde a una Especialidad."
+    folder: "content/blog"
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: "Título", widget: string }
+      - { name: subtitle, label: "Subtítulo", widget: string, required: false }
+      - { name: excerpt, label: "Resumen (para listados y SEO)", widget: text }
+      - {
+          name: date,
+          label: "Fecha de publicación",
+          widget: datetime,
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+        }
+      - {
+          name: updated,
+          label: "Fecha de actualización",
+          widget: datetime,
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          required: false,
+        }
+      - { name: author, label: "Autor", widget: string, default: "Max Escobari" }
+      - name: category
+        label: "Categoría (Especialidad)"
+        widget: select
+        options:
+          - { label: "Arquitectura de Soluciones", value: "arquitectura-de-soluciones" }
+          - { label: "Desarrollo de Software", value: "desarrollo-de-software" }
+          - { label: "Gestión de Proyectos TI", value: "gestion-de-proyectos-ti" }
+          - { label: "Implementación ITIL", value: "implementacion-itil" }
+          - { label: "Gemelos Digitales", value: "gemelos-digitales" }
+          - { label: "IA Agéntica", value: "ia-agentica" }
+      - { name: topic, label: "Tema (subtema)", widget: string, required: false }
+      - { name: tags, label: "Tags", widget: list, required: false }
+      - { name: cover, label: "Imagen de portada", widget: image, required: false }
+      - { name: draft, label: "Borrador (no se publica)", widget: boolean, default: false }
+      - {
+          name: publishAt,
+          label: "Programar publicación (opcional)",
+          widget: datetime,
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          required: false,
+        }
+      - { name: body, label: "Contenido", widget: markdown }

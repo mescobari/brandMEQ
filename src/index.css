@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Open+Sans:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -446,4 +446,204 @@ html { scroll-behavior: smooth; }
   .itil4-page a[href] {
     min-height: 44px;
   }
+}
+
+/* ═══ About — Premium dark SaaS ══════════════════════════════════════════ */
+/* Radial night-blue background base */
+.about-dark {
+  background: radial-gradient(125% 125% at 50% 0%, #0D1024 0%, #0A0B14 62%);
+}
+
+/* Floating panels/images: gentle vertical bob */
+@keyframes about-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.about-float { animation: about-float 6s ease-in-out infinite; }
+
+/* Brand gradient (cyan → blue → violet) cycling on text via background-clip */
+@keyframes about-gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.about-brand-text {
+  background-image: linear-gradient(90deg, #2DD4C4, #3B82F6, #8B5CF6, #3B82F6, #2DD4C4);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: about-gradient-shift 8s ease infinite;
+}
+
+/* Soft violet/cyan glow behind the floating image — moves with it */
+.about-image-glow::before {
+  content: "";
+  position: absolute;
+  inset: -16%;
+  background: radial-gradient(45% 45% at 50% 50%,
+    rgba(124, 92, 252, 0.50) 0%,
+    rgba(45, 212, 196, 0.26) 50%,
+    transparent 78%);
+  filter: blur(52px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .about-float { animation: none; }
+  .about-brand-text { animation: none; }
+}
+
+/* ═══ Institutions ribbon — infinite marquee ═════════════════════════════ */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 38s linear infinite;
+}
+/* Pause on hover (UX detail) */
+.marquee-viewport:hover .marquee-track {
+  animation-play-state: paused;
+}
+/* Soft fade-out at both edges */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+/* Accessibility: drastically slow the loop for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation-duration: 150s; }
+}
+
+/* ═══ Blog prose — rendered Markdown (dark theme) ════════════════════════ */
+.blog-prose {
+  font-family: 'Plus Jakarta Sans', 'Geist', sans-serif;
+  color: #D7DBE7;
+  font-size: 18px;
+  line-height: 1.8;
+}
+.blog-prose > * + * { margin-top: 1.25em; }
+.blog-prose h2 {
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  font-size: 1.7em;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+}
+.blog-prose h3 {
+  margin-top: 1.6em;
+  margin-bottom: 0.5em;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+.blog-prose h4 { margin-top: 1.4em; font-size: 1.1em; font-weight: 700; color: #FFFFFF; }
+.blog-prose p { color: #D7DBE7; }
+.blog-prose a {
+  color: #3B82F6;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+.blog-prose a:hover { color: #2DD4C4; }
+.blog-prose strong { color: #FFFFFF; font-weight: 700; }
+.blog-prose ul, .blog-prose ol { padding-left: 1.4em; }
+.blog-prose ul { list-style: disc; }
+.blog-prose ol { list-style: decimal; }
+.blog-prose li { margin-top: 0.4em; }
+.blog-prose li::marker { color: #2DD4C4; }
+.blog-prose blockquote {
+  border-left: 3px solid #3B82F6;
+  padding: 0.4em 0 0.4em 1.2em;
+  color: #A9AEC0;
+  font-style: italic;
+  background: rgba(59, 130, 246, 0.06);
+  border-radius: 0 8px 8px 0;
+}
+.blog-prose img {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.blog-prose iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.blog-prose hr { border: none; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 2em 0; }
+.blog-prose table { width: 100%; border-collapse: collapse; font-size: 0.95em; }
+.blog-prose th, .blog-prose td { border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.5em 0.8em; text-align: left; }
+.blog-prose th { background: rgba(255, 255, 255, 0.04); color: #FFFFFF; }
+/* Inline code */
+.blog-prose code {
+  font-family: 'GeistMono', 'Courier New', monospace;
+  font-size: 0.88em;
+  background: rgba(255, 255, 255, 0.08);
+  color: #2DD4C4;
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+}
+/* Code blocks (highlight.js) */
+.blog-prose pre.hljs,
+.blog-prose pre {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  padding: 1.1em 1.3em;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+.blog-prose pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font-size: 1em;
+}
+
+/* ═══ Specialties — light coverflow section ══════════════════════════════ */
+.specialties-light {
+  background: linear-gradient(180deg, #F4F5F9 0%, #EAECF3 100%);
+  /* Soft highlight at the top edge to ease the cut from the dark section above */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Continuous 3D cylinder rotation (specialties carousel) */
+@keyframes cylinder-spin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+.cylinder-spin {
+  animation: cylinder-spin var(--spin-duration, 36s) linear infinite;
+}
+/* Reduced-motion: stop the auto rotation (manual navigation takes over) */
+@media (prefers-reduced-motion: reduce) {
+  .cylinder-spin { animation: none !important; }
+}
+
+/* Volumetric 3D card: top bevel highlight, inner bottom shade, an extruded
+   colored edge (the "thickness"), and a soft cast shadow for elevation.
+   --card-edge sets the side color per card. */
+.spec-card-3d {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -14px 26px rgba(0, 0, 0, 0.38),
+    0 16px 0 -4px var(--card-edge, rgba(0, 0, 0, 0.55)),
+    0 36px 52px -16px rgba(0, 0, 0, 0.62);
+}
+.spec-card-3d:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    inset 0 -14px 26px rgba(0, 0, 0, 0.32),
+    0 22px 0 -4px var(--card-edge, rgba(0, 0, 0, 0.55)),
+    0 48px 72px -16px rgba(0, 0, 0, 0.68);
 }

@@ -1,7 +1,9 @@
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { PageOverlay } from '@/components/PageOverlay';
 import { Hero } from '@/sections/Hero';
+import { InstitutionsRibbon } from '@/sections/InstitutionsRibbon';
 import { About } from '@/sections/About';
 import { Services } from '@/sections/Services';
 import { Portfolio } from '@/sections/Portfolio';
@@ -9,12 +11,12 @@ import { Testimonials } from '@/sections/Testimonials';
 import { CTA } from '@/sections/CTA';
 import { Footer } from '@/sections/Footer';
 import { usePageLoad } from '@/hooks/usePageLoad';
-import { ITIL4SalesPage } from '@/pages/ITIL4SalesPage';
-import SalesPage     from '@/pages/SalesPage';
-import CheckoutPage  from '@/pages/CheckoutPage';
-import DeliveryPage  from '@/pages/DeliveryPage';
-import UpsellPage    from '@/pages/UpsellPage';
-import ThankYouPage  from '@/pages/ThankYouPage';
+
+// Lazy-loaded routes — keep markdown-it / highlight.js out of the home bundle
+const ProjectPage = lazy(() => import('@/pages/ProjectPage').then((m) => ({ default: m.ProjectPage })));
+const ProjectsListPage = lazy(() => import('@/pages/ProjectsListPage').then((m) => ({ default: m.ProjectsListPage })));
+const BlogListPage = lazy(() => import('@/blog/pages/BlogListPage').then((m) => ({ default: m.BlogListPage })));
+const BlogPostPage = lazy(() => import('@/blog/pages/BlogPostPage').then((m) => ({ default: m.BlogPostPage })));
 
 function PersonalBrandSite() {
   const { showOverlay } = usePageLoad(500);
@@ -30,10 +32,11 @@ function PersonalBrandSite() {
       {/* Main Content */}
       <main>
         <Hero />
+        <InstitutionsRibbon />
         <About />
         <Services />
-        <Portfolio />
         <Testimonials />
+        <Portfolio />
         <CTA />
       </main>
       
@@ -45,21 +48,22 @@ function PersonalBrandSite() {
 
 function App() {
   return (
-    <HashRouter>
-      <Routes>
-        {/* Personal brand homepage */}
-        <Route path="/" element={<PersonalBrandSite />} />
-        {/* ITIL 4 Book sales page */}
-        <Route path="/itil4" element={<ITIL4SalesPage />} />
-        <Route path="/libro-itil" element={<ITIL4SalesPage />} />
-        {/* ── Funnel de ventas ── */}
-        <Route path="/ventas"          element={<SalesPage />} />
-        <Route path="/checkout"        element={<CheckoutPage />} />
-        <Route path="/entrega/:token" element={<DeliveryPage />} />
-        <Route path="/upsell"          element={<UpsellPage />} />
-        <Route path="/gracias"         element={<ThankYouPage />} />
-      </Routes>
-    </HashRouter>
+    <BrowserRouter>
+      <Suspense fallback={<div className="min-h-screen bg-[#0A0B14]" />}>
+        <Routes>
+          {/* Personal brand homepage */}
+          <Route path="/" element={<PersonalBrandSite />} />
+          {/* Projects */}
+          <Route path="/proyectos" element={<ProjectsListPage />} />
+          <Route path="/proyectos/:slug" element={<ProjectPage />} />
+          {/* Blog */}
+          <Route path="/blog" element={<BlogListPage />} />
+          <Route path="/blog/categoria/:cat" element={<BlogListPage />} />
+          <Route path="/blog/tag/:tag" element={<BlogListPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
 }
 

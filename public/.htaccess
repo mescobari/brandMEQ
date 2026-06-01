@@ -1,0 +1,28 @@
+# ─── SPA fallback for clean URLs (Apache / cPanel) ───────────────────────────
+# Serves index.html for any route that isn't a real file/folder, so deep links
+# like /blog/mi-articulo work on refresh. Once SSG (phase 2) emits real HTML per
+# route, those files are served directly and this only covers client-only routes.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Don't rewrite existing files or directories
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Everything else → SPA entry
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# ─── Caching for hashed assets ───────────────────────────────────────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 6 months"
+  ExpiresByType image/png "access plus 6 months"
+  ExpiresByType image/webp "access plus 6 months"
+  # HTML should always be revalidated
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>

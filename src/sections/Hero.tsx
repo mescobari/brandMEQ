@@ -34,7 +34,7 @@ export function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative w-full min-h-screen overflow-hidden bg-neutral-900 cursor-none"
+      className="font-jakarta relative w-full min-h-screen overflow-hidden bg-neutral-900 cursor-none"
       onMouseMove={handleMouseMove}
       style={{ '--mouse-x': 'calc(42vw - 200px)', '--mouse-y': 'calc(28vh - 200px)' } as React.CSSProperties}
     >
@@ -115,7 +115,7 @@ export function Hero() {
           )}
           style={{ transitionDelay: '800ms' }}
         >
-          <span className="text-xs font-geist-mono uppercase tracking-[0.3em] text-white/70">
+          <span className="text-[14px] font-medium uppercase tracking-[0.3em] text-white/70">
             {heroConfig.roles[0]}
           </span>
         </div>
@@ -128,7 +128,7 @@ export function Hero() {
           )}
           style={{ transitionDelay: '900ms' }}
         >
-          <span className="text-xs font-geist-mono uppercase tracking-[0.3em] text-white/70">
+          <span className="text-[14px] font-medium uppercase tracking-[0.3em] text-white/70">
             {heroConfig.roles[1]}
           </span>
         </div>

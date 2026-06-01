@@ -1,4 +1,5 @@
 import { useState, useEffect, type MouseEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { AnimatedButton } from './AnimatedButton';
 import { navigationConfig } from '@/config';
@@ -9,6 +10,7 @@ export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fade in navbar after page load
@@ -30,10 +32,18 @@ export function Navigation() {
 
   const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
+    setIsMenuOpen(false);
+    // Route links (start with '/') navigate; anchors (start with '#') smooth-scroll on the home page
+    if (href.startsWith('/')) {
+      navigate(href);
+      return;
+    }
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
-      setIsMenuOpen(false);
+    } else {
+      // Anchor target not on this page → go home, then to the section
+      navigate(`/${href}`);
     }
   };
 

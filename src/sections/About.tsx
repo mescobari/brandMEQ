@@ -1,110 +1,142 @@
-import { } from 'react';
 import { cn } from '@/lib/utils';
-import { useScrollAnimation, useStaggerAnimation } from '@/hooks/useScrollAnimation';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { aboutConfig } from '@/config';
 
 export function About() {
-  if (!aboutConfig.description && aboutConfig.stats.length === 0 && aboutConfig.images.length === 0) return null;
+  if (!aboutConfig.description && aboutConfig.stats.length === 0 && !aboutConfig.bioImage?.src) return null;
 
   const { ref: sectionRef, isVisible: sectionVisible } = useScrollAnimation({ threshold: 0.2 });
-  const { containerRef: imagesRef, visibleItems } = useStaggerAnimation(aboutConfig.images.length || 4, 150);
 
   return (
-    <section id="about" className="w-full py-24 lg:py-32 bg-white">
-      <div className="container-large px-6 lg:px-12">
-        <div ref={sectionRef} className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-          {/* Left Column - Text Content */}
-          <div className="space-y-8">
+    <section
+      id="about"
+      className="about-dark font-jakarta flex w-full items-center overflow-hidden py-16 lg:min-h-screen lg:py-20"
+    >
+      <div
+        className="mx-auto w-full max-w-[1280px]"
+        style={{ paddingLeft: 'clamp(24px, 5vw, 80px)', paddingRight: 'clamp(24px, 5vw, 80px)' }}
+      >
+        <div
+          ref={sectionRef}
+          className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14"
+        >
+          {/* ── Left Column — Content ──────────────────────────────── */}
+          <div className="space-y-5">
             {/* Section Label */}
             {aboutConfig.label && (
               <div
                 className={cn(
-                  'transition-all duration-800 ease-out-quart',
+                  'transition-all duration-700 ease-out',
                   sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 )}
               >
-                <span className="text-xs font-geist-mono uppercase tracking-widest text-exvia-black/50">
+                <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#8A8FA3]">
                   {aboutConfig.label}
                 </span>
               </div>
             )}
 
-            {/* Main Text */}
+            {/* Headline — second line shares the exact same animated brand gradient as "25+" */}
+            <div
+              className={cn(
+                'transition-all duration-700 ease-out',
+                sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+              )}
+              style={{ transitionDelay: '80ms' }}
+            >
+              <h2 className="mb-5 text-[clamp(28px,3vw,46px)] font-extrabold leading-[1.05] tracking-tight">
+                <span className="block text-white md:whitespace-nowrap">Project Manager Senior</span>
+                <span className="about-brand-text block">Arquitecto de Soluciones TI</span>
+              </h2>
+            </div>
+
+            {/* Biography */}
             {aboutConfig.description && (
               <div
                 className={cn(
-                  'transition-all duration-800 ease-out-quart',
+                  'transition-all duration-700 ease-out',
                   sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
                 )}
                 style={{ transitionDelay: '100ms' }}
               >
-                <p className="text-xl lg:text-2xl text-exvia-black leading-relaxed">
+                <p
+                  lang="es"
+                  className="hyphens-auto text-left text-[16px] font-normal leading-[1.65] text-[#E4E7EF] md:text-justify lg:text-[17px]"
+                  style={{ textJustify: 'inter-word' }}
+                >
                   {aboutConfig.description}
                 </p>
               </div>
             )}
 
-            {/* Experience Badge */}
+            {/* Featured metric — animated brand gradient */}
             {aboutConfig.experienceValue && (
               <div
                 className={cn(
-                  'flex items-end gap-3 pt-4 transition-all duration-800 ease-out-quart',
+                  'flex items-end gap-4 pt-2 transition-all duration-700 ease-out',
                   sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
                 )}
                 style={{ transitionDelay: '200ms' }}
               >
-                <span className="text-7xl lg:text-8xl font-black text-exvia-black leading-none">
+                <span className="about-brand-text text-[48px] font-extrabold leading-none tracking-tight lg:text-[56px]">
                   {aboutConfig.experienceValue}
                 </span>
                 {aboutConfig.experienceLabel && (
-                  <span className="text-sm text-exvia-black/60 pb-3">
+                  <span className="whitespace-pre-line pb-2.5 text-[13px] leading-snug text-[#8A8FA3]">
                     {aboutConfig.experienceLabel}
                   </span>
                 )}
               </div>
             )}
 
-            {/* Stats */}
+            {/* Secondary metrics */}
             {aboutConfig.stats.length > 0 && (
               <div
                 className={cn(
-                  'grid grid-cols-3 gap-8 pt-8 border-t border-exvia-border transition-all duration-800 ease-out-quart',
+                  'grid grid-cols-3 gap-6 border-t border-white/[0.08] pt-5 transition-all duration-700 ease-out',
                   sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
                 )}
                 style={{ transitionDelay: '300ms' }}
               >
                 {aboutConfig.stats.map((stat, index) => (
                   <div key={index}>
-                    <span className="block text-3xl font-semibold text-exvia-black">{stat.value}</span>
-                    <span className="text-sm text-exvia-black/60">{stat.label}</span>
+                    <span className="about-brand-text block text-[24px] font-bold leading-none">
+                      {stat.value}
+                    </span>
+                    <span className="mt-2 block whitespace-pre-line text-[12px] leading-snug text-[#8A8FA3]">
+                      {stat.label}
+                    </span>
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Right Column - Image Grid */}
-          {aboutConfig.images.length > 0 && (
-            <div ref={imagesRef} className="grid grid-cols-2 gap-4">
-              {aboutConfig.images.map((image, index) => (
+          {/* ── Right Column — Single floating image ───────────────── */}
+          {aboutConfig.bioImage?.src && (
+            <div
+              className={cn(
+                'flex justify-center transition-all duration-1000 ease-out lg:justify-end',
+                sectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              )}
+              style={{ transitionDelay: '150ms' }}
+            >
+              <div className="about-float about-image-glow relative w-full max-w-[480px]">
                 <div
-                  key={index}
-                  className={cn(
-                    'relative overflow-hidden transition-all duration-700 ease-out-quart',
-                    index % 2 === 1 ? 'mt-8' : '',
-                    visibleItems[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  )}
+                  className="relative z-10 aspect-[4/5] overflow-hidden rounded-[20px] border border-white/[0.08]"
+                  style={{
+                    boxShadow:
+                      '0 30px 60px -15px rgba(0,0,0,0.7), 0 0 50px -10px rgba(59,130,246,0.35), 0 0 80px -20px rgba(139,92,246,0.30)',
+                  }}
                 >
-                  <div className="aspect-[4/5] relative group cursor-pointer">
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      className="w-full h-full object-cover transition-transform duration-500 ease-out-quad group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-exvia-black/0 group-hover:bg-exvia-black/10 transition-colors duration-300" />
-                  </div>
+                  <img
+                    src={aboutConfig.bioImage.src}
+                    alt={aboutConfig.bioImage.alt}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
-              ))}
+              </div>
             </div>
           )}
         </div>
