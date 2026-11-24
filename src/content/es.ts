@@ -247,7 +247,7 @@ export const es: SiteContent = {
       'Suscríbase para recibir artículos técnicos, insights sobre gestión de proyectos y novedades del sector TI.',
     newsletterButtonText: 'Suscribirse',
     newsletterPlaceholder: 'su@email.com',
-    copyright: '© 2025 Max Escobari. Todos los derechos reservados.',
+    copyright: '© {year} Max Escobari. Todos los derechos reservados.',
     credit: 'Diseñado con precisión técnica y visión estratégica',
   },
 

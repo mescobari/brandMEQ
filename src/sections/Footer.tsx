@@ -155,7 +155,7 @@ export function Footer() {
           >
             {footerConfig.copyright && (
               <p className="text-xs text-white/40">
-                {footerConfig.copyright}
+                {footerConfig.copyright.replace('{year}', String(new Date().getFullYear()))}
               </p>
             )}
             {footerConfig.credit && (

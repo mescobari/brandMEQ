@@ -250,7 +250,7 @@ export const en: SiteContent = {
     newsletterDescription: 'Subscribe for technical articles, project management insights, and IT industry news.',
     newsletterButtonText: 'Subscribe',
     newsletterPlaceholder: 'your@email.com',
-    copyright: '© 2025 Max Escobari. All rights reserved.',
+    copyright: '© {year} Max Escobari. All rights reserved.',
     credit: 'Designed with technical precision and strategic vision',
   },
 
