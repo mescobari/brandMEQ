@@ -2,9 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
-import { testimonialsConfig } from '@/config';
+import { useContent } from '@/i18n/context';
 
 export function Testimonials() {
+  const { testimonialsConfig, uiText } = useContent();
   if (!testimonialsConfig.heading && testimonialsConfig.testimonials.length === 0) return null;
 
   const testimonials = testimonialsConfig.testimonials;
@@ -150,7 +151,7 @@ export function Testimonials() {
 
               {/* Author Info */}
               <div className="border-t border-white/[0.08] pt-5">
-                <div className="relative min-h-[64px]">
+                <div className="relative min-h-[84px]">
                   {testimonials.map((testimonial, index) => (
                     <div
                       key={index}
@@ -165,6 +166,9 @@ export function Testimonials() {
                       <p className="mt-1 text-[17px] text-[#8A8FA3]">
                         {testimonial.role}, {testimonial.company}
                       </p>
+                      {testimonial.translated && (
+                        <p className="mt-1 text-[12px] italic text-[#8A8FA3]/80">{uiText.translatedNote}</p>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -187,7 +191,7 @@ export function Testimonials() {
                           ? { background: 'linear-gradient(90deg, #2DD4C4, #3B82F6, #8B5CF6)' }
                           : undefined
                       }
-                      aria-label={`Ir al testimonio ${index + 1}`}
+                      aria-label={`${uiText.goToTestimonial} ${index + 1}`}
                     />
                   ))}
                 </div>
@@ -197,14 +201,14 @@ export function Testimonials() {
                   <button
                     onClick={prevSlide}
                     className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/80 transition-all duration-300 hover:bg-white/10 hover:text-white"
-                    aria-label="Testimonio anterior"
+                    aria-label={uiText.previousTestimonial}
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </button>
                   <button
                     onClick={nextSlide}
                     className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/80 transition-all duration-300 hover:bg-white/10 hover:text-white"
-                    aria-label="Siguiente testimonio"
+                    aria-label={uiText.nextTestimonial}
                   >
                     <ChevronRight className="h-4 w-4" />
                   </button>

@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { cn } from '@/lib/utils';
-import { heroConfig } from '@/config';
+import { useContent } from '@/i18n/context';
 
 const boxSize = 450;
 const halfBox = boxSize / 2;
 
 export function Hero() {
+  const { heroConfig, uiText } = useContent();
   if (!heroConfig.name && heroConfig.roles.length === 0) return null;
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -47,7 +48,7 @@ export function Hero() {
       >
         <img
           src={heroConfig.backgroundImage}
-          alt="Hero Background"
+          alt={uiText.heroBackgroundAlt}
           className="absolute inset-0 w-full h-full object-cover"
           style={{ filter: 'blur(15px) brightness(0.7)' }}
           onLoad={() => setImageLoaded(true)}
@@ -79,7 +80,8 @@ export function Hero() {
         >
           <img
             src={heroConfig.backgroundImage}
-            alt="Hero Sharp"
+            alt=""
+            aria-hidden="true"
             className="w-full h-full object-cover"
           />
         </div>

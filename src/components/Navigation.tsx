@@ -2,9 +2,11 @@ import { useState, useEffect, type MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { AnimatedButton } from './AnimatedButton';
-import { navigationConfig } from '@/config';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { useContent } from '@/i18n/context';
 
 export function Navigation() {
+  const { navigationConfig, uiText } = useContent();
   if (!navigationConfig.logo && navigationConfig.links.length === 0) return null;
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -95,7 +97,8 @@ export function Navigation() {
 
             {/* Contact Button */}
             {navigationConfig.contactLabel && (
-              <div className="hidden lg:block">
+              <div className="hidden lg:flex items-center gap-6">
+                <LanguageSwitcher tone={isScrolled ? 'dark' : 'light'} />
                 <AnimatedButton
                   href={navigationConfig.contactHref || "#contact"}
                   variant={isScrolled ? "primary" : "outline-white"}
@@ -111,7 +114,7 @@ export function Navigation() {
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="lg:hidden relative w-8 h-6 flex flex-col justify-between"
-                aria-label="Toggle menu"
+                aria-label={uiText.toggleMenu}
               >
                 <span
                   className={cn(
@@ -179,6 +182,13 @@ export function Navigation() {
                 {navigationConfig.contactLabel}
               </AnimatedButton>
             )}
+            <LanguageSwitcher
+              tone="dark"
+              className={cn(
+                'text-lg transition-all duration-500 ease-out-quart',
+                isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              )}
+            />
           </div>
         </div>
       )}

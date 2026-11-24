@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
-import { portfolioConfig } from '@/config';
-import { projects } from '@/data/projects';
+import { useContent } from '@/i18n/context';
+import { projects as baseProjects } from '@/data/projects';
 import { ProjectCard } from '@/components/ProjectCard';
 
 const scrollToContact = (e: MouseEvent<HTMLAnchorElement>) => {
@@ -16,6 +16,12 @@ const scrollToContact = (e: MouseEvent<HTMLAnchorElement>) => {
 };
 
 export function Portfolio() {
+  const { portfolioConfig } = useContent();
+  // Card title/sector per locale; falls back to the Spanish source data in src/data/projects.ts
+  const projects = baseProjects.map((p) => {
+    const text = portfolioConfig.cardText[p.slug];
+    return text ? { ...p, titulo: text.title, sector: text.sector } : p;
+  });
   if (projects.length === 0) return null;
 
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.3 });
@@ -92,7 +98,7 @@ export function Portfolio() {
               onClick={scrollToContact}
               className="group/cta inline-flex items-center gap-2 text-[15px] font-medium text-white/85 transition-colors hover:text-white"
             >
-              {portfolioConfig.cta.linkText || 'Agendar consulta gratuita'}
+              {portfolioConfig.cta.linkText}
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/cta:-translate-y-0.5 group-hover/cta:translate-x-0.5" />
             </a>
             {/* Decorative brand glow */}
@@ -113,7 +119,7 @@ export function Portfolio() {
             className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[15px] font-semibold text-white shadow-lg transition-transform hover:scale-[1.03]"
             style={{ background: 'linear-gradient(90deg, #2DD4C4, #3B82F6, #8B5CF6)' }}
           >
-            {portfolioConfig.viewAllLabel || 'Ver todos los proyectos'}
+            {portfolioConfig.viewAllLabel}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

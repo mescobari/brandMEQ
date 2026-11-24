@@ -1,8 +1,9 @@
 import { cn } from '@/lib/utils';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import { aboutConfig } from '@/config';
+import { useContent } from '@/i18n/context';
 
 export function About() {
+  const { aboutConfig, siteConfig } = useContent();
   if (!aboutConfig.description && aboutConfig.stats.length === 0 && !aboutConfig.bioImage?.src) return null;
 
   const { ref: sectionRef, isVisible: sectionVisible } = useScrollAnimation({ threshold: 0.2 });
@@ -45,8 +46,8 @@ export function About() {
               style={{ transitionDelay: '80ms' }}
             >
               <h2 className="mb-5 text-[clamp(28px,3vw,46px)] font-extrabold leading-[1.05] tracking-tight">
-                <span className="block text-white md:whitespace-nowrap">Project Manager Senior</span>
-                <span className="about-brand-text block">Arquitecto de Soluciones TI</span>
+                <span className="block text-white md:whitespace-nowrap">{aboutConfig.headline[0]}</span>
+                <span className="about-brand-text block">{aboutConfig.headline[1]}</span>
               </h2>
             </div>
 
@@ -60,7 +61,7 @@ export function About() {
                 style={{ transitionDelay: '100ms' }}
               >
                 <p
-                  lang="es"
+                  lang={siteConfig.language}
                   className="hyphens-auto text-left text-[16px] font-normal leading-[1.65] text-[#E4E7EF] md:text-justify lg:text-[17px]"
                   style={{ textJustify: 'inter-word' }}
                 >

@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { PageOverlay } from '@/components/PageOverlay';
@@ -11,6 +11,8 @@ import { Testimonials } from '@/sections/Testimonials';
 import { CTA } from '@/sections/CTA';
 import { Footer } from '@/sections/Footer';
 import { usePageLoad } from '@/hooks/usePageLoad';
+import { LocaleProvider } from '@/i18n/LocaleProvider';
+import { useContent } from '@/i18n/context';
 
 // Lazy-loaded routes — keep markdown-it / highlight.js out of the home bundle
 const ProjectPage = lazy(() => import('@/pages/ProjectPage').then((m) => ({ default: m.ProjectPage })));
@@ -20,6 +22,12 @@ const BlogPostPage = lazy(() => import('@/blog/pages/BlogPostPage').then((m) => 
 
 function PersonalBrandSite() {
   const { showOverlay } = usePageLoad(500);
+  const { siteConfig } = useContent();
+
+  // Home page title follows the selected language
+  useEffect(() => {
+    document.title = siteConfig.title;
+  }, [siteConfig.title]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -48,6 +56,7 @@ function PersonalBrandSite() {
 
 function App() {
   return (
+    <LocaleProvider>
     <BrowserRouter>
       <Suspense fallback={<div className="min-h-screen bg-[#0A0B14]" />}>
         <Routes>
@@ -64,6 +73,7 @@ function App() {
         </Routes>
       </Suspense>
     </BrowserRouter>
+    </LocaleProvider>
   );
 }
 

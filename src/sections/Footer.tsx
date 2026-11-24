@@ -2,7 +2,7 @@ import { type MouseEvent } from 'react';
 import { cn } from '@/lib/utils';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { ArrowUpRight, Linkedin, Github, Mail, Circle, type LucideIcon } from 'lucide-react';
-import { footerConfig } from '@/config';
+import { useContent } from '@/i18n/context';
 
 const iconMap: Record<string, LucideIcon> = {
   Linkedin,
@@ -15,6 +15,7 @@ function getIcon(iconName: string): LucideIcon {
 }
 
 export function Footer() {
+  const { footerConfig } = useContent();
   if (!footerConfig.logo && footerConfig.columns.length === 0 && footerConfig.socialLinks.length === 0) return null;
 
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.1 });

@@ -3,9 +3,10 @@ import { cn } from '@/lib/utils';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { AnimatedButton } from '@/components/AnimatedButton';
 import { ArrowRight, Mail } from 'lucide-react';
-import { ctaConfig } from '@/config';
+import { useContent } from '@/i18n/context';
 
 export function CTA() {
+  const { ctaConfig, uiText } = useContent();
   if (!ctaConfig.heading && !ctaConfig.description) return null;
 
   const { ref: sectionRef, isVisible } = useScrollAnimation({ threshold: 0.3 });
@@ -16,7 +17,7 @@ export function CTA() {
       <div className="absolute inset-0">
         <img
           src={ctaConfig.backgroundImage}
-          alt="Background"
+          alt={uiText.ctaBackgroundAlt}
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-exvia-black/60" />

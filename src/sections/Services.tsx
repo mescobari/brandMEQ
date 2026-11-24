@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { servicesConfig, type ServiceItem } from '@/config';
+import type { ServiceItem } from '@/config';
+import { useContent } from '@/i18n/context';
 import {
   Network,
   Code2,
@@ -125,6 +126,7 @@ function SpecialtyCard({
 }
 
 export function Services() {
+  const { servicesConfig, uiText } = useContent();
   if (!servicesConfig.heading && servicesConfig.services.length === 0) return null;
 
   const services = servicesConfig.services;
@@ -218,8 +220,8 @@ export function Services() {
           {/* 3D stage */}
           <div
             role="group"
-            aria-roledescription="carrusel"
-            aria-label="Especialidades — rotación automática, pase el cursor para pausar"
+            aria-roledescription={uiText.carouselRoleDescription}
+            aria-label={uiText.carouselLabel}
             tabIndex={0}
             onKeyDown={onKeyDown}
             onMouseEnter={() => setPaused(true)}
@@ -241,7 +243,7 @@ export function Services() {
               >
                 {services.map((service, i) => (
                   <SpecialtyCard
-                    key={service.title}
+                    key={service.categoryKey}
                     service={service}
                     index={i}
                     step={step}
@@ -259,7 +261,7 @@ export function Services() {
               <>
                 <button
                   type="button"
-                  aria-label="Anterior"
+                  aria-label={uiText.previous}
                   onClick={() => nudge(1)}
                   className="absolute left-1 top-1/2 z-[200] flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-black/5 bg-white text-[#1A1D2E] shadow-lg transition-transform hover:scale-105 sm:left-3"
                 >
@@ -267,7 +269,7 @@ export function Services() {
                 </button>
                 <button
                   type="button"
-                  aria-label="Siguiente"
+                  aria-label={uiText.next}
                   onClick={() => nudge(-1)}
                   className="absolute right-1 top-1/2 z-[200] flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-black/5 bg-white text-[#1A1D2E] shadow-lg transition-transform hover:scale-105 sm:right-3"
                 >

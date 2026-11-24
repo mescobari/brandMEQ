@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { institutionsConfig, type Institution } from '@/config';
+import type { Institution } from '@/config';
+import { useContent } from '@/i18n/context';
 
 interface InstitutionsRibbonProps {
   label?: string;
@@ -35,10 +36,10 @@ function LogoItem({ item }: { item: Institution }) {
   );
 }
 
-export function InstitutionsRibbon({
-  label = institutionsConfig.label,
-  items = institutionsConfig.items,
-}: InstitutionsRibbonProps) {
+export function InstitutionsRibbon(props: InstitutionsRibbonProps) {
+  const { institutionsConfig, uiText } = useContent();
+  const label = props.label ?? institutionsConfig.label;
+  const items = props.items ?? institutionsConfig.items;
   if (!items || items.length === 0) return null;
 
   // Duplicate the list so the -50% translate produces an invisible loop
@@ -46,7 +47,7 @@ export function InstitutionsRibbon({
 
   return (
     <section
-      aria-label={label || 'Instituciones con las que he trabajado'}
+      aria-label={label || uiText.institutionsFallbackLabel}
       className="relative w-full"
     >
       {/* Brand-gradient accent line (the only color in the light band) */}
