@@ -1,27 +1,32 @@
 import { useState, useEffect, type MouseEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { AnimatedButton } from './AnimatedButton';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { useContent } from '@/i18n/context';
 
-export function Navigation() {
+interface NavigationProps {
+  /** ms before the navbar fades in. The home page waits for its intro overlay; inner pages pass a short delay. */
+  revealDelay?: number;
+}
+
+export function Navigation({ revealDelay = 1800 }: NavigationProps) {
   const { navigationConfig, uiText } = useContent();
-  if (!navigationConfig.logo && navigationConfig.links.length === 0) return null;
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     // Fade in navbar after page load
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 1800);
+    }, revealDelay);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [revealDelay]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,7 +37,14 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleLogoClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setIsMenuOpen(false);
+    if (pathname === '/') window.scrollTo({ top: 0, behavior: 'smooth' });
+    else navigate('/');
+  };
+
+  const handleNavClick = (e: MouseEvent<HTMLElement>, href: string) => {
     e.preventDefault();
     setIsMenuOpen(false);
     // Route links (start with '/') navigate; anchors (start with '#') smooth-scroll on the home page
@@ -49,6 +61,8 @@ export function Navigation() {
     }
   };
 
+  if (!navigationConfig.logo && navigationConfig.links.length === 0) return null;
+
   return (
     <>
       <nav
@@ -62,7 +76,7 @@ export function Navigation() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             {navigationConfig.logo && (
-              <a href="#" className="flex items-center">
+              <a href="/" onClick={handleLogoClick} className="flex items-center">
                 <span className={cn(
                   "text-2xl font-semibold tracking-tight transition-colors duration-500",
                   isScrolled ? "text-exvia-black" : "text-white"
@@ -101,6 +115,7 @@ export function Navigation() {
                 <LanguageSwitcher tone={isScrolled ? 'dark' : 'light'} />
                 <AnimatedButton
                   href={navigationConfig.contactHref || "#contact"}
+                  onClick={(e) => handleNavClick(e, navigationConfig.contactHref || '#contact')}
                   variant={isScrolled ? "primary" : "outline-white"}
                   size="md"
                 >
@@ -171,6 +186,7 @@ export function Navigation() {
             {navigationConfig.contactLabel && (
               <AnimatedButton
                 href={navigationConfig.contactHref || "#contact"}
+                onClick={(e) => handleNavClick(e, navigationConfig.contactHref || '#contact')}
                 variant="primary"
                 size="lg"
                 className={cn(

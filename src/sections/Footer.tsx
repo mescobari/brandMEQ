@@ -1,4 +1,5 @@
 import { type MouseEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { ArrowUpRight, Linkedin, Github, Mail, Circle, type LucideIcon } from 'lucide-react';
@@ -16,9 +17,9 @@ function getIcon(iconName: string): LucideIcon {
 
 export function Footer() {
   const { footerConfig } = useContent();
-  if (!footerConfig.logo && footerConfig.columns.length === 0 && footerConfig.socialLinks.length === 0) return null;
 
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.1 });
+  const navigate = useNavigate();
 
   const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith('#')) {
@@ -26,9 +27,14 @@ export function Footer() {
       const element = document.querySelector(href);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Section lives on the home page (we are on an inner page)
+        navigate(`/${href}`);
       }
     }
   };
+
+  if (!footerConfig.logo && footerConfig.columns.length === 0 && footerConfig.socialLinks.length === 0) return null;
 
   return (
     <footer ref={ref} className="w-full bg-exvia-black text-white py-16 lg:py-24">
@@ -42,9 +48,9 @@ export function Footer() {
             )}
           >
             {footerConfig.logo && (
-              <a href="#" className="inline-block">
+              <Link to="/" className="inline-block">
                 <span className="text-2xl font-semibold tracking-tight">{footerConfig.logo}</span>
-              </a>
+              </Link>
             )}
             {footerConfig.description && (
               <p className="text-sm text-white/60 max-w-xs leading-relaxed">

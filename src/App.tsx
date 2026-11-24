@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { PageOverlay } from '@/components/PageOverlay';
 import { Hero } from '@/sections/Hero';
@@ -24,10 +24,21 @@ function PersonalBrandSite() {
   const { showOverlay } = usePageLoad(500);
   const { siteConfig } = useContent();
 
+  const { hash } = useLocation();
+
   // Home page title follows the selected language
   useEffect(() => {
     document.title = siteConfig.title;
   }, [siteConfig.title]);
+
+  // Arriving from an inner page with /#section → scroll there once the intro overlay is gone
+  useEffect(() => {
+    if (!hash || hash.startsWith('#/')) return;
+    const timer = setTimeout(() => {
+      document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
+    }, 700);
+    return () => clearTimeout(timer);
+  }, [hash]);
 
   return (
     <div className="min-h-screen bg-white">

@@ -647,3 +647,33 @@ html { scroll-behavior: smooth; }
     0 22px 0 -4px var(--card-edge, rgba(0, 0, 0, 0.55)),
     0 48px 72px -16px rgba(0, 0, 0, 0.68);
 }
+
+/* ═══ Case-study pages (/proyectos/:slug) ════════════════════════════════ */
+/* Hero photo settles from a slight zoom — same easing family as the home hero */
+@keyframes case-hero-zoom {
+  from { transform: scale(1.12); }
+  to   { transform: scale(1); }
+}
+.case-hero-zoom { animation: case-hero-zoom 2.4s var(--ease-out-cubic) both; }
+
+/* Staggered entrance for hero copy */
+@keyframes case-rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.case-rise { opacity: 0; animation: case-rise 0.9s var(--ease-out-quart) forwards; }
+
+/* Lightbox */
+@keyframes case-lightbox-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.case-lightbox-in { animation: case-lightbox-in 0.35s var(--ease-out-quart) both; }
+
+/* Gradient hairline used as section divider / timeline rail */
+.case-brand-line { background: linear-gradient(180deg, #2DD4C4, #3B82F6, #8B5CF6); }
+
+@media (prefers-reduced-motion: reduce) {
+  .case-hero-zoom, .case-lightbox-in { animation: none; }
+  .case-rise { animation: none; opacity: 1; }
+}

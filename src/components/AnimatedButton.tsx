@@ -1,10 +1,11 @@
-import { useState, type CSSProperties, type ReactNode } from 'react';
+import { useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 
 interface AnimatedButtonProps {
   children: ReactNode;
-  onClick?: () => void;
+  /** Also forwarded to the <a> when href is set (e.g. router-aware anchor handling). */
+  onClick?: (e: MouseEvent<HTMLElement>) => void;
   href?: string;
   variant?: 'primary' | 'secondary' | 'outline' | 'outline-white';
   size?: 'sm' | 'md' | 'lg';
@@ -75,6 +76,7 @@ export function AnimatedButton({
     return (
       <a
         href={href}
+        onClick={onClick}
         className={baseStyles}
         style={style}
         onMouseEnter={() => setIsHovered(true)}

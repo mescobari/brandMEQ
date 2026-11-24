@@ -51,15 +51,15 @@ check(es?.siteConfig?.language === 'es', 'ES siteConfig.language is "es"');
 
 console.log('Same structure in both locales');
 const sections = ['siteConfig', 'navigationConfig', 'heroConfig', 'aboutConfig', 'institutionsConfig',
-  'servicesConfig', 'portfolioConfig', 'testimonialsConfig', 'ctaConfig', 'footerConfig', 'uiText'];
+  'servicesConfig', 'portfolioConfig', 'testimonialsConfig', 'ctaConfig', 'footerConfig', 'uiText', 'projectsPage'];
 for (const s of sections) check(Boolean(en?.[s]) && Boolean(es?.[s]), `"${s}" exists in en and es`);
 check(en?.servicesConfig?.services?.length === es?.servicesConfig?.services?.length, 'same number of services');
 check(en?.navigationConfig?.links?.every((l, i) => l.href === es?.navigationConfig?.links?.[i]?.href),
   'nav hrefs (routes) are identical across locales');
 
 console.log('Key parity between en and es');
-// Compare object shape (keys + array lengths), ignoring free-form maps like cardText.
-const FREE_FORM = new Set(['cardText']);
+// Compare object shape (keys + array lengths), ignoring free-form maps (none today).
+const FREE_FORM = new Set([]);
 const shape = (v, p = '') => {
   if (Array.isArray(v)) return v.flatMap((x, i) => shape(x, `${p}[${i}]`));
   if (v && typeof v === 'object')
@@ -83,7 +83,7 @@ const collectStrings = (v) =>
   typeof v === 'string' ? [v] : Array.isArray(v) ? v.flatMap(collectStrings)
   : v && typeof v === 'object' ? Object.entries(v).filter(([k]) => !['href', 'src', 'logo', 'image', 'backgroundImage', 'buttonHref', 'email', 'iconName', 'categoryKey', 'initials'].includes(k)).flatMap(([, x]) => collectStrings(x))
   : [];
-for (const s of ['navigationConfig', 'heroConfig', 'aboutConfig', 'servicesConfig', 'portfolioConfig', 'ctaConfig', 'footerConfig', 'uiText']) {
+for (const s of ['navigationConfig', 'heroConfig', 'aboutConfig', 'servicesConfig', 'portfolioConfig', 'ctaConfig', 'footerConfig', 'uiText', 'projectsPage']) {
   const hits = collectStrings(en?.[s]).filter((t) => SPANISH.test(ALLOWED.reduce((acc, re) => acc.replace(re, ''), t)));
   check(en?.[s] && hits.length === 0, `EN ${s} has no Spanish text${hits.length ? ` → "${hits[0].slice(0, 70)}"` : ''}`);
 }
@@ -103,6 +103,32 @@ console.log('Experience figure');
 const enText = JSON.stringify(en ?? {});
 const esText = JSON.stringify(es ?? {});
 check(!/\b30\s*\+?\s*(years|años)/i.test(enText + esText), 'no "30 years" claim');
+
+console.log('Projects (src/data/projects.ts)');
+const projBuild = await build({
+  entryPoints: [path.join(root, 'src/data/projects.ts')],
+  bundle: true, format: 'esm', platform: 'node', write: false, logLevel: 'silent',
+});
+const { projects = [] } = await import(`data:text/javascript;base64,${Buffer.from(projBuild.outputFiles[0].text).toString('base64')}`);
+check(projects.length === 6, `6 projects (got ${projects.length})`);
+const PROJECT_ALLOWED = [...ALLOWED, /Medicus Mundi/g];
+for (const p of projects) {
+  const pe = p.text?.en;
+  const ps = p.text?.es;
+  check(Boolean(pe && ps), `${p.slug}: has en and es text`);
+  const a = new Set(shape(pe ?? {}));
+  const b = new Set(shape(ps ?? {}));
+  const diff = [...a].filter((k) => !b.has(k)).concat([...b].filter((k) => !a.has(k)));
+  check(a.size > 0 && diff.length === 0, `${p.slug}: en/es shape matches${diff.length ? ` (${diff.slice(0, 4)})` : ''}`);
+  const hits = collectStrings(pe).filter((t) => SPANISH.test(PROJECT_ALLOWED.reduce((acc, re) => acc.replace(re, ''), t)));
+  check(hits.length === 0, `${p.slug}: EN text has no Spanish${hits.length ? ` → "${hits[0].slice(0, 70)}"` : ''}`);
+  check(pe?.gallery?.length === p.images.gallery.length, `${p.slug}: one caption per gallery image`);
+  const files = [p.images.cover, ...p.images.gallery].map((src) => path.join(root, 'public', src));
+  const missing = files.filter((f) => !existsSync(f));
+  check(missing.length === 0, `${p.slug}: cover + gallery images exist${missing.length ? ` (missing ${missing.length})` : ''}`);
+}
+check(!/\b30\s*\+?\s*(years|años)\s+(of\s+experience|de\s+experiencia)/i.test(JSON.stringify(projects)),
+  'projects: no "30 years of experience" claim');
 
 console.log('Language selector');
 const switcher = path.join(root, 'src/components/LanguageSwitcher.tsx');

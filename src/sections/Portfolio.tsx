@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { useContent } from '@/i18n/context';
-import { projects as baseProjects } from '@/data/projects';
+import { projects } from '@/data/projects';
 import { ProjectCard } from '@/components/ProjectCard';
 
 const scrollToContact = (e: MouseEvent<HTMLAnchorElement>) => {
@@ -17,15 +17,10 @@ const scrollToContact = (e: MouseEvent<HTMLAnchorElement>) => {
 
 export function Portfolio() {
   const { portfolioConfig } = useContent();
-  // Card title/sector per locale; falls back to the Spanish source data in src/data/projects.ts
-  const projects = baseProjects.map((p) => {
-    const text = portfolioConfig.cardText[p.slug];
-    return text ? { ...p, titulo: text.title, sector: text.sector } : p;
-  });
-  if (projects.length === 0) return null;
-
+  // Card text per locale comes from src/data/projects.ts (ProjectCard reads the active locale).
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.3 });
   const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation({ threshold: 0.1 });
+  if (projects.length === 0) return null;
 
   return (
     <section id="portfolio" className="specialties-light font-jakarta w-full overflow-hidden py-24 lg:py-32">

@@ -90,11 +90,6 @@ export interface PortfolioCTA {
   linkHref: string;
 }
 
-export interface ProjectCardText {
-  title: string;
-  sector: string;
-}
-
 export interface PortfolioConfig {
   label: string;
   heading: string;
@@ -102,8 +97,6 @@ export interface PortfolioConfig {
   projects: ProjectItem[];
   cta: PortfolioCTA;
   viewAllLabel: string;
-  /** Optional per-locale card text for the home grid, keyed by project slug (src/data/projects.ts). */
-  cardText: Record<string, ProjectCardText>;
 }
 
 export interface TestimonialItem {
@@ -175,8 +168,50 @@ export interface UiText {
   ctaBackgroundAlt: string;
 }
 
-export interface SiteContent {
-  siteConfig: SiteConfig;
+/** UI strings for /proyectos and the case-study pages (project content lives in src/data/projects.ts). */
+export interface ProjectsPageText {
+  metaTitle: string;
+  metaDescription: string;
+  label: string;
+  heading: string;
+  intro: string;
+  statYears: string;
+  statProjects: string;
+  statCountries: string;
+  viewCaseStudy: string;
+  breadcrumbHome: string;
+  breadcrumbProjects: string;
+  institution: string;
+  period: string;
+  role: string;
+  sector: string;
+  impactLabel: string;
+  impactHeading: string;
+  storyLabel: string;
+  contextLabel: string;
+  challengeLabel: string;
+  solutionLabel: string;
+  approachLabel: string;
+  approachHeading: string;
+  roleLabel: string;
+  outcomesLabel: string;
+  galleryLabel: string;
+  capabilitiesLabel: string;
+  stackLabel: string;
+  photoNote: string;
+  openImage: string;
+  closeImage: string;
+  ctaLabel: string;
+  ctaHeading: string;
+  ctaText: string;
+  ctaPrimary: string;
+  previous: string;
+  next: string;
+  allProjects: string;
+  notFound: string;
+}
+
+export interface SiteContent {  siteConfig: SiteConfig;
   navigationConfig: NavigationConfig;
   heroConfig: HeroConfig;
   aboutConfig: AboutConfig;
@@ -187,4 +222,5 @@ export interface SiteContent {
   ctaConfig: CTAConfig;
   footerConfig: FooterConfig;
   uiText: UiText;
+  projectsPage: ProjectsPageText;
 }
